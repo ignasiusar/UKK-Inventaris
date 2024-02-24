@@ -1,7 +1,10 @@
 <?php
   
 namespace App\Http\Controllers;
- 
+
+use App\Models\Product;
+use App\Models\Supplier;
+use App\Models\Pinjam;
 use Illuminate\Http\Request;
   
 class HomeController extends Controller
@@ -23,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('auth.login');
     } 
   
     /**
@@ -33,6 +36,34 @@ class HomeController extends Controller
      */
     public function adminHome()
     {
-        return view('adminHome');
+        return view('layouts.dashboard');
+        return view('inventaris.index',compact('products'));
     }
+
+    public function adminInvent()
+    {
+        $suppliers = Supplier::All();
+        $products = Product::latest()->paginate(5);
+
+        return view('inventaris.index',compact('products','suppliers'))->with('i',(request()->input('page',1) - 1) * 5);
+    }
+
+    public function adminSup()
+    {
+
+        return view('suppliers.index', compact('supplier'));
+    }
+
+    public function adminPinj()
+    {
+        $pinjams = Pinjam::All();
+        return view('pinjams.index', compact('pinjams'));
+    }
+
+    public function userInd()
+    {
+
+        return view('user');
+    }
+   
 }
